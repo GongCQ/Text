@@ -5,10 +5,9 @@ import thulac
 import datetime as dt
 
 dbConfig = Public.GetPara(os.path.join('.', 'config', 'db.txt'))
-conn = redis.StrictRedis(host=dbConfig['host'], port = dbConfig['port'], db = int(dbConfig['db']), decode_responses = True)
-conn1= redis.StrictRedis(host=dbConfig['host'], port = dbConfig['port'], db = 1, decode_responses = True)
+conn = redis.StrictRedis(host=dbConfig['host'], port = dbConfig['port'], password = dbConfig['pw'], db = int(dbConfig['db']), decode_responses = True)
 
-stockSet = Public.FileToSet(os.path.join('.', 'dict', 'stock'))
+stockSet = Public.FileToSet(os.path.join('.', 'dict', 'dict'))
 
 tl = thulac.thulac(user_dict = os.path.join('.', 'dict', 'stock'), filt = False, seg_only=True)
 # tl1= thulac.thulac(user_dict = os.path.join('.', 'dict', 'stock'), filt = True , seg_only=True)
@@ -36,10 +35,13 @@ for key in secKeys:
         kw = c[0]
         for stock in rltStock:
             conn.zincrby(kw, stock, 1)
-    for kw in kwSet:
-        for stock in rltStock:
-            conn1.zincrby(kw, stock, 1)
-            # conn.sadd(kw + '_' + stock, url)
+    # for kw in kwSet:
+    #     for stock in rltStock:
+    #         # conn1.zincrby(kw, stock, 1)
+    #         # conn.sadd(kw + '_' + stock, url)
+
+    # 移除已分词
+    conn.srem('SECTION_BUFFER', key)
 
     newTime = dt.datetime.now()
     print(seq)

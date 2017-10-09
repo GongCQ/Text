@@ -177,26 +177,6 @@ def Launch(conn):
         timeDict[key] = dt.datetime.strptime(timeDict[key], '%Y-%m-%d %H:%M:%S')
 
     infoList = [
-                {'url'   : 'http://stock.eastmoney.com/news/cbkjj.html',
-                 'key'   : 'bkjj',
-                 'label' : '东方财富 板块聚焦',
-                 'method': GetNewsListEs},
-
-                {'url'   : 'http://stock.eastmoney.com/news/cggdj.html',
-                 'key'   : 'ggdj',
-                 'label' : '东方财富 个股点睛',
-                 'method': GetNewsListEs},
-
-                {'url'   : 'http://finance.eastmoney.com/news/cgsxw.html',
-                 'key'   : 'gsxw',
-                 'label' : '东方财富 公司新闻',
-                 'method': GetNewsListEs},
-
-                # {'url'   : 'http://stock.eastmoney.com/news/cgspj.html',
-                #  'key'   : 'gspj',
-                #  'label' : '东方财富 个股评级',
-                #  'method': GetNewsListEs},
-
                 {'url'   : 'http://datainterface.eastmoney.com//EM_DataCenter/js.aspx?'
                            'type=SR&sty=GGSR&'
                            'js={%22data%22:[(x)],%22pages%22:%22(pc)%22,%22update%22:%22(ud)%22,%22count%22:%22(count)%22}'
@@ -212,6 +192,21 @@ def Launch(conn):
                  'key'   : 'hyyb',
                  'label' : '东方财富 行业研报',
                  'method': GetReportListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cbkjj.html',
+                 'key'   : 'bkjj',
+                 'label' : '东方财富 板块聚焦',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cggdj.html',
+                 'key'   : 'ggdj',
+                 'label' : '东方财富 个股点睛',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cgsxw.html',
+                 'key'   : 'gsxw',
+                 'label' : '东方财富 公司新闻',
+                 'method': GetNewsListEs},
 
                 {'url'   : 'http://finance.eastmoney.com/news/cgspl.html',
                  'key'   : 'gspl',
@@ -236,30 +231,181 @@ def Launch(conn):
                 {'url'   : 'http://stock.eastmoney.com/news/cbktt.html',
                  'key'   : 'bktt',
                  'label' : '东方财富 报刊头条',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cssgs.html',
+                 'key'   : 'ssgs',
+                 'label' : '东方财富 上市公司',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/ccjdd.html',
+                 'key'   : 'cjdd',
+                 'label' : '东方财富 财经导读',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cpljh.html',
+                 'key'   : 'pljh',
+                 'label' : '东方财富 评论精华',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/ccyts.html',
+                 'key'   : 'cyts',
+                 'label' : '东方财富 产业透视',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cjjsp.html',
+                 'key'   : 'jjsp',
+                 'label' : '东方财富 经济时评',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/csygc.html',
+                 'key'   : 'sygc',
+                 'label' : '东方财富 商业观察',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/chgyj.html',
+                 'key'   : 'hgyj',
+                 'label' : '东方财富 宏观研究',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cywjh.html',
+                 'key'   : 'ywjh',
+                 'label' : '东方财富 要闻精华',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cgjjj.html',
+                 'key'   : 'gjjj',
+                 'label' : '东方财富 国际经济',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://biz.eastmoney.com/news/csyzx.html',
+                 'key'   : 'syzx',
+                 'label' : '东方财富 商业资讯',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://finance.eastmoney.com/news/cjjxr.html',
+                 'key'   : 'jjxr',
+                 'label' : '东方财富 经济学人',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/czggng.html',
+                 'key'   : 'zggng',
+                 'label' : '东方财富 中国概念股',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/cggyw.html',
+                 'key'   : 'ggyw',
+                 'label' : '东方财富 港股要闻',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/cggdd.html',
+                 'key'   : 'ggdd',
+                 'label' : '东方财富 港股导读',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/csckx.html',
+                 'key'   : 'sckx',
+                 'label' : '东方财富 市场快讯',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/cgsbd.html',
+                 'key'   : 'gsbd',
+                 'label' : '东方财富 公司报道',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/cahgdt.html',
+                 'key'   : 'ahgdt',
+                 'label' : '东方财富 AH股动态',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://hk.eastmoney.com/news/cggyj.html',
+                 'key'   : 'ggyj',
+                 'label' : '东方财富 个股研究',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cggjh.html',
+                 'key'   : 'ggjh',
+                 'label' : '东方财富 个股精华',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cdpfx.html',
+                 'key'   : 'dpfx',
+                 'label' : '东方财富 大盘分析',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/czldd.html',
+                 'key'   : 'zldd',
+                 'label' : '东方财富 主力导读',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/czljh.html',
+                 'key'   : 'zljh',
+                 'label' : '东方财富 主力精华',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cgmjj.html',
+                 'key'   : 'gmjj',
+                 'label' : '东方财富 公募基金',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cyzsm.html',
+                 'key'   : 'yzsm',
+                 'label' : '东方财富 游资私募',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/csbjj.html',
+                 'key'   : 'sbjj',
+                 'label' : '东方财富 社保基金',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cbxzj.html',
+                 'key'   : 'bxzj',
+                 'label' : '东方财富 保险资金',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/czlls.html',
+                 'key'   : 'zlls',
+                 'label' : '东方财富 主力论市',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/czlcc.html',
+                 'key'   : 'zlcc',
+                 'label' : '东方财富 主力持仓',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cqfii.html',
+                 'key'   : 'qfii',
+                 'label' : '东方财富 QFII',
+                 'method': GetNewsListEs},
+
+                {'url'   : 'http://stock.eastmoney.com/news/cqsxt.html',
+                 'key'   : 'qsxt',
+                 'label' : '东方财富 券商信托',
                  'method': GetNewsListEs}
                 ]
 
     newsList = []
     for info in infoList:
         key = info['key']
-        if key in timeDict.keys():
-            newsList, maxTime = info['method'](info['url'], timeDict[key], info['label'])
-            timeDict[key] = maxTime if maxTime != dt.datetime.min else timeDict[key]
-            for news in newsList:
-                if not conn.exists(news.url):
-                    newsDict = {'url': news.url, 'time': news.time, 'title': news.title,
-                                'source': news.source, 'label': news.label,
-                                'abstract': news.abstract, 'secNum': len(news.sectionList)}
-                    conn.hmset(news.url, newsDict)
-                    for section in news.sectionList:
-                        secDict = {'url': news.url, 'time': news.time, 'title': news.title,
-                                   'secTitle': section.title, 'content': section.content}
-                        secKey = news.url + ',' + str(section.seq)
-                        if not conn.exists(secKey):
-                            conn.hmset(secKey, secDict)
-                            conn.sadd('SECTION_BUFFER', secKey)
-            conn.hset('CONFIG_ES', key, timeDict[key].strftime('%Y-%m-%d %H:%M:%S'))
-        else:
-            News.WriteLog('Can not get last update time of ' + key)
+        if key not in timeDict.keys():
+            News.WriteLog('Can not get last update time of ' + key + ', set as default value 2016-01-01 00:00:00.')
+            timeDict[key] = dt.datetime.strptime('2016-01-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+        newsList, maxTime = info['method'](info['url'], timeDict[key], info['label'])
+        for news in newsList:
+            if not conn.exists(news.url):
+                newsDict = {'url': news.url, 'time': news.time, 'title': news.title,
+                            'source': news.source, 'label': news.label,
+                            'abstract': news.abstract, 'secNum': len(news.sectionList)}
+                conn.hmset(news.url, newsDict)
+                for section in news.sectionList:
+                    simhash = News.SimHash(News.SenVec(section.content, 2), 64)
+                    secDict = {'url': news.url, 'time': news.time, 'title': news.title,
+                               'secTitle': section.title, 'content': section.content, 'simhash': simhash}
+                    secKey = news.url + ',' + str(section.seq)
+                    if not conn.exists(secKey):
+                        conn.hmset(secKey, secDict)
+                        conn.sadd('SECTION_BUFFER', secKey)
+        timeDict[key] = maxTime if maxTime != dt.datetime.min else timeDict[key]
+        conn.hset('CONFIG_ES', key, timeDict[key].strftime('%Y-%m-%d %H:%M:%S'))
 
     ddd = 0
