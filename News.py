@@ -34,6 +34,7 @@ def SimHash(senVec, length = 64):
                 accum[i] += 1
     for i in range(len(accum)):
         simhash += ('1' if accum[i] > 1 else '0')
+    return simhash
 
 class News:
     def __init__(self, url, time, title, source, abstract, content, sectionList, label = ''):

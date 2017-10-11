@@ -9,7 +9,7 @@ conn = redis.StrictRedis(host=dbConfig['host'], port = dbConfig['port'], passwor
 
 stockSet = Public.FileToSet(os.path.join('.', 'dict', 'dict'))
 
-tl = thulac.thulac(user_dict = os.path.join('.', 'dict', 'stock'), filt = False, seg_only=True)
+tl = thulac.thulac(user_dict = os.path.join('.', 'dict', 'dict'), filt = False, seg_only=True)
 # tl1= thulac.thulac(user_dict = os.path.join('.', 'dict', 'stock'), filt = True , seg_only=True)
 secKeys = conn.smembers('SECTION_BUFFER')
 time = dt.datetime.now()

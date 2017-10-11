@@ -2,6 +2,7 @@ import News
 import datetime as dt
 import os
 import json
+import thulac
 # import Para
 
 def GetNewsEs(url):
@@ -171,10 +172,15 @@ def GetReportListEs(url, time = dt.datetime.min, label = '', maxOverdue = 5):
 
     return newsList, maxTime
 
-def Launch(conn):
-    timeDict = conn.hgetall('CONFIG_ES')
+def Launch(db):
+
+    parser = thulac.thulac(user_dict = os.path.join('.', 'dict', 'dict'), filt = False, seg_only=True)
+
+    timeDict = db['CONFIG'].find_one({'_id': 'CONFIG_ES'}) # timeDict = conn.hgetall('CONFIG_ES')
+
     for key in timeDict.keys():
-        timeDict[key] = dt.datetime.strptime(timeDict[key], '%Y-%m-%d %H:%M:%S')
+        if key != '_id':
+            timeDict[key] = dt.datetime.strptime(timeDict[key], '%Y-%m-%d %H:%M:%S')
 
     infoList = [
                 {'url'   : 'http://datainterface.eastmoney.com//EM_DataCenter/js.aspx?'
@@ -384,7 +390,6 @@ def Launch(conn):
                  'method': GetNewsListEs}
                 ]
 
-    newsList = []
     for info in infoList:
         key = info['key']
         if key not in timeDict.keys():
@@ -392,20 +397,30 @@ def Launch(conn):
             timeDict[key] = dt.datetime.strptime('2016-01-01 00:00:00', '%Y-%m-%d %H:%M:%S')
         newsList, maxTime = info['method'](info['url'], timeDict[key], info['label'])
         for news in newsList:
-            if not conn.exists(news.url):
-                newsDict = {'url': news.url, 'time': news.time, 'title': news.title,
+            if True:
+                newsDict = {'_id': news.url,
+                            'url': news.url, 'time': news.time, 'title': news.title,
                             'source': news.source, 'label': news.label,
                             'abstract': news.abstract, 'secNum': len(news.sectionList)}
-                conn.hmset(news.url, newsDict)
+                db['news'].save(newsDict)
                 for section in news.sectionList:
-                    simhash = News.SimHash(News.SenVec(section.content, 2), 64)
-                    secDict = {'url': news.url, 'time': news.time, 'title': news.title,
-                               'secTitle': section.title, 'content': section.content, 'simhash': simhash}
                     secKey = news.url + ',' + str(section.seq)
-                    if not conn.exists(secKey):
-                        conn.hmset(secKey, secDict)
-                        conn.sadd('SECTION_BUFFER', secKey)
+                    simhash = News.SimHash(News.SenVec(section.content, 2), 64)
+                    parse = []
+                    cut = parser.cut(section.content)
+                    for c in cut:
+                        parse.append(c[0])
+                    secDict = {'_id': secKey,
+                               'url': news.url, 'time': news.time, 'title': news.title,
+                               'secTitle': section.title, 'content': section.content, 'simhash': simhash,
+                               'parse': parse}
+                    if True:
+                        db['section'].save(secDict)
         timeDict[key] = maxTime if maxTime != dt.datetime.min else timeDict[key]
-        conn.hset('CONFIG_ES', key, timeDict[key].strftime('%Y-%m-%d %H:%M:%S'))
+
+    for key in timeDict.keys():
+        if key != '_id':
+            timeDict[key] = timeDict[key].strftime('%Y-%m-%d %H:%M:%S')
+    db['CONFIG'].save(timeDict)
 
     ddd = 0
