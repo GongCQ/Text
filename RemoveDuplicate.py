@@ -17,7 +17,7 @@ class DocInfo:
         self.time = time
         self.notDup = notDup
         self.shSeg = [simhash[0 : 16], simhash[16 : 32], simhash[32 : 48], simhash[48 : 64]]
-        self.slave = [self]
+        self.slave = []
 
 
 class RemoveDuplicate:
@@ -46,7 +46,9 @@ class RemoveDuplicate:
             if cand.notDup == True and docInfo.time >= cand.time and \
                HamDist(docInfo.simhash, cand.simhash) <= 3 and \
                cand.id != docInfo.id :
+                   cand.slave.extend([docInfo])
                    cand.slave.extend(docInfo.slave)
+                   docInfo.slave = []
                    docInfo.notDup = False
                    return False
         docInfo.notDup = True
