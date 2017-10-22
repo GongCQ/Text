@@ -5,37 +5,6 @@ import datetime as dt
 import chardet
 import hashlib
 
-def SenVec(sentence, parseModel = 2):
-    vec = []
-    if isinstance(parseModel, int):
-        for i in range(len(sentence) - 1):
-            vec.append(sentence[i : i + parseModel])
-        return vec
-    else:
-        temp = parseModel.cut(sentence)
-        for t in temp:
-            vec.append(t[0])
-    return vec
-
-def SimHash(senVec, length = 64):
-    accum = [0] * length
-    simhash = ''
-    for word in senVec:
-        m16 = hashlib.md5(word.encode('utf-8')).hexdigest()
-        m10 = int(int(m16, 16) / (2 ** (128 - length)))
-        m2 = bin(m10)[2 : ]
-        wordHash = [0] * (length - len(m2))
-        wordHash.extend(m2)
-
-        for i in range(len(wordHash)):
-            if wordHash[i] == '0':
-                accum[i] -= 1
-            elif wordHash[i] == '1':
-                accum[i] += 1
-    for i in range(len(accum)):
-        simhash += ('1' if accum[i] > 1 else '0')
-    return simhash
-
 class News:
     def __init__(self, url, time, title, source, abstract, content, sectionList, label = ''):
         self.url = url

@@ -3,6 +3,7 @@ import datetime as dt
 import os
 import json
 import thulac
+import RemoveDuplicate as rm
 # import Para
 
 def GetNewsEs(url):
@@ -181,6 +182,8 @@ def Launch(db):
     for key in timeDict.keys():
         if key != '_id':
             timeDict[key] = dt.datetime.strptime(timeDict[key], '%Y-%m-%d %H:%M:%S')
+
+    rem = rm.GetDupRem(db, 7, False)
 
     infoList = [
                 {'url'   : 'http://datainterface.eastmoney.com//EM_DataCenter/js.aspx?'
@@ -405,7 +408,9 @@ def Launch(db):
                 db['news'].save(newsDict)
                 for section in news.sectionList:
                     secKey = news.url + ',' + str(section.seq)
-                    simhash = News.SimHash(News.SenVec(section.content, 2), 64)
+                    simhash = rm.SimHash(rm.SenVec(section.content, 2), 64)
+                    secInfo = rm.DocInfo(secKey, simhash, news.time)
+                    masterId = rem.AddDoc(secInfo)
                     parse = []
                     cut = parser.cut(section.content)
                     for c in cut:
@@ -413,7 +418,7 @@ def Launch(db):
                     secDict = {'_id': secKey,
                                'url': news.url, 'time': news.time, 'title': news.title,
                                'secTitle': section.title, 'content': section.content, 'simhash': simhash,
-                               'parse': parse}
+                               'parse': parse, 'masterId': ('' if masterId is None else masterId)}
                     if True:
                         db['section'].save(secDict)
         timeDict[key] = maxTime if maxTime != dt.datetime.min else timeDict[key]

@@ -68,7 +68,7 @@ def ToDB(db, themeSet, updateTime = None):
     if updateTime is None:
         updateTime = db['CONFIG'].find_one({'_id': 'THEME_UPDATE'})['updateTime']
     sections = db['section'].find({'time': {'$gte': updateTime}})
-    maxTime = dt.datetime.min
+    maxTime = dt.datetime(2000, 1, 1)
     count = 0
     for sec in sections:
         wordFreq, sentences = SecTheme(sec, themeSet)
@@ -98,6 +98,8 @@ def ThemeCluster(db, themeSet):
         for theme in themeSet:
             themeCluster[theme] = []
     for sec in sections:
+        if sec['masterId'] != '':  # 不记录重复的文档
+            continue
         wordFreq = db['wordFreq'].find_one({'_id': sec['_id']})
         for word in wordFreq.keys():
             if word in themeSet:
@@ -105,15 +107,16 @@ def ThemeCluster(db, themeSet):
                     if sec['time'] >= dt.datetime.now() - dt.timedelta(days=days):
                         themeCluster[word].append([sec['_id'], wordFreq[word]])
     for days, themeCluster in themeClusterDict.items():
-        db['themeCluster' + str(days)].drop()
+        db['themeCluster' + str(days)].drop()  # 把之前的统计全部删掉
         for word, secIdList in themeCluster.items():
             db['themeCluster' + str(days)].save({'_id': word, 'sections': secIdList})
     ddd = 0
 
 
-dbConfig = Public.GetPara(os.path.join('.', 'config', 'db.txt'))
-mc = pm.MongoClient(dbConfig['mongoConn'])
-db = mc['text']
-themeSet = Public.FileToSet(os.path.join('.', 'dict', 'dict'))
-count = ToDB(db, themeSet, updateTime = None)
+# dbConfig = Public.GetPara(os.path.join('.', 'config', 'db.txt'))
+# mc = pm.MongoClient(dbConfig['mongoConn'])
+# db = mc['text']
+# themeSet = Public.FileToSet(os.path.join('.', 'dict', 'dict'))
+# count = ToDB(db, themeSet, updateTime = None)
+# print(count)
 # ThemeCluster(db, themeSet)
