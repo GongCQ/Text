@@ -122,8 +122,9 @@ def GetDupRem(db, days, initRem):
 dbConfig = Public.GetPara(os.path.join('.', 'config', 'db.txt'))
 mc = pm.MongoClient(dbConfig['mongoConn'])
 db = mc['text']
+# # 整体扫描去重----------------------------------------
 # d0 = dt.datetime.now()
-# rem = GetDupRem(db, 90, True)
+# rem = GetDupRem(db, 120, True)  # 在最近120天范围内去重
 #
 # docDict = {}
 # for doc in rem.docInfoList:
@@ -143,13 +144,15 @@ db = mc['text']
 #             slaveSec['masterId'] = doc.id
 #             slaveSec['slave'] = []
 #             db['section'].save(slaveSec)
-#     print(ccc)
+#     print(dt.datetime.now())
+#     print(str(ccc) + '/' + str(len(rem.docInfoList)))
 #     ccc += 1
+# -----------------------------------------------------
 
 
-sections = db.section.find({'time': {'$gte': dt.datetime.now() - dt.timedelta(days=90)}})
-secDict = {}
-for sec in sections:
-    if sec['masterId'] == '':
-        secDict[sec['_id']] = sec
+# sections = db.section.find({'time': {'$gte': dt.datetime.now() - dt.timedelta(days=90)}})
+# secDict = {}
+# for sec in sections:
+#     if sec['masterId'] == '':
+#         secDict[sec['_id']] = sec
 ddd = 0
