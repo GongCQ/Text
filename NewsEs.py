@@ -408,6 +408,8 @@ def Launch(db):
                 db['news'].save(newsDict)
                 for section in news.sectionList:
                     secKey = news.url + ',' + str(section.seq)
+                    if db['section'].find_one({'_id': secKey}) is not None: # already exists
+                        continue
                     simhash = rm.SimHash(rm.SenVec(section.content, 2), 64)
                     secInfo = rm.DocInfo(secKey, simhash, news.time)
                     masterId = rem.AddDoc(secInfo)
@@ -419,8 +421,7 @@ def Launch(db):
                                'url': news.url, 'time': news.time, 'title': news.title,
                                'secTitle': section.title, 'content': section.content, 'simhash': simhash,
                                'parse': parse, 'masterId': ('' if masterId is None else masterId)}
-                    if True:
-                        db['section'].save(secDict)
+                    db['section'].save(secDict)
         timeDict[key] = maxTime if maxTime != dt.datetime.min else timeDict[key]
 
     for key in timeDict.keys():
